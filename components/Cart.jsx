@@ -20,7 +20,9 @@ const Cart = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(cartItems)
+     
     })
+    console.log(response.body)
     if(response.statusCode===500) return;
     const data= await response.json()
     toast.loading('Redirecting...')
@@ -79,8 +81,8 @@ const Cart = () => {
               <h3>${totalPrice}</h3>
             </div>
             <div className='btn-container'>
-              <button type='button' className='btn' onClick={()=>handleCheckout}>
-                Pay with Stripe
+              <button type='button' className='btn' >
+                Pay Now
               </button>
             </div>
           </div>
