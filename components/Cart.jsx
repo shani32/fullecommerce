@@ -11,22 +11,24 @@ const Cart = () => {
   const CartRef= useRef()
   const {totalPrice, totalQuantities, cartItems, setShowCart, toggleCartItemQuantity, onRemove}= useStateContext()
 
-  const handleCheckout=async()=>{
-    const stripe= await getStripe()
+  const handleCheckout = async () => {
+    const stripe = await getStripe();
 
-    const response= await fetch('/api/stripe', {
+    const response = await fetch('/api/stripe', {
       method: 'POST',
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(cartItems)
-     
-    })
-    console.log(response.body)
-    if(response.statusCode===500) return;
-    const data= await response.json()
-    toast.loading('Redirecting...')
-    stripe.redirectToCheckout({ sessionId: data.id})
+      body: JSON.stringify(cartItems),
+    });
+
+    if(response.statusCode === 500) return;
+    
+    const data = await response.json();
+
+    // toast.loading('Redirecting...');
+
+   stripe.redirectToCheckout({ sessionId: data.id });
   }
   return (
     <div className='cart-wrapper' ref={CartRef}>
@@ -81,7 +83,7 @@ const Cart = () => {
               <h3>${totalPrice}</h3>
             </div>
             <div className='btn-container'>
-              <button type='button' className='btn' >
+              <button type='button' className='btn' onClick={handleCheckout} >
                 Pay Now
               </button>
             </div>
@@ -93,5 +95,6 @@ const Cart = () => {
     </div>
   )
 }
-
+//todo still got an issue with paying with stripe 
 export default Cart
+
